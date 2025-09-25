@@ -1,7 +1,7 @@
 // functions/handler.js
-import fetch from "node-fetch";
+const fetch = require("node-fetch"); // CommonJS 방식
 
-export async function handler(event) {
+const handler = async (event) => {
   const keyword = event.queryStringParameters.keyword;
   const API_KEY = process.env.API_KEY;
 
@@ -19,4 +19,6 @@ export async function handler(event) {
     console.error("API 호출 실패", err);
     return { statusCode: 500, body: JSON.stringify({ error: "API 호출 실패" }) };
   }
-}
+};
+
+module.exports = { handler };
