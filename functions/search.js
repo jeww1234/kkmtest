@@ -10,6 +10,7 @@ export async function handler(event) {
   try {
     const response = await fetch(url);
     const data = await response.json();
+    console.log("ddd", data)
     return { statusCode: 200, body: JSON.stringify(data) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: "API 호출 실패" }) };
