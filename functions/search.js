@@ -1,8 +1,9 @@
+// functions/handler.js
 import fetch from "node-fetch";
 
 export async function handler(event) {
-  const keyword = event.queryStringParameters.keyword;
-  const API_KEY = process.env.API_KEY; // Netlify 환경변수
+  const keyword = event.queryStringParameters.keyword; // keyword로 받아야 함
+  const API_KEY = process.env.API_KEY;
 
   const url = `https://www.nl.go.kr/NL/search/openApi/search.do?key=${API_KEY}&srchTarget=total&kwd=${encodeURIComponent(keyword)}&pageNum=1&pageSize=10&category=도서&apiType=json`;
 
