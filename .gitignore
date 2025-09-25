@@ -6,3 +6,6 @@ node_modules/
 # 환경 변수 파일도 깃허브에 올라가지 않음
 .env
 
+
+# Local Netlify folder
+.netlify

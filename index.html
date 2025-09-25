@@ -3,18 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>도서 검색 테스트</title>
 </head>
 <body>
-  <div>
-    <!-- 검색창 -->
-    <input type="text" id="keyword" placeholder="책 제목 입력">
-    <button id="searchBtn">검색!</button>
-  </div>
-<!--  -->
-  <!-- 결과 출력 영역 -->
-  <div id="exm"></div>
-  <script type="module" src="./main.js"></script>
-</body>
+  <h1>국립중앙도서관 검색 테스트</h1>
 
+  <!-- 검색창 -->
+  <input type="text" id="keyword" placeholder="책 제목 입력">
+  <button id="searchBtn">검색</button>
+
+  <!-- 결과 출력 영역 -->
+  <div id="exm" style="margin-top:20px;"></div>
+
+  <!-- JS -->
+  <script type="module">
+    const abcd = [];
+
+    const render = () => {
+      const filtered = abcd.filter(book => book.imageUrl && book.imageUrl.trim() !== "");
+      if (!filtered.length) {
+        document.getElementById("exm").innerHTML = "<p>검색 결과가 없습니다.</p>";
+        return;
+      }
+      const html = filtered.map(book => {
+        const imgUrl = `https://cover.nl.go.kr/${book.imageUrl}`;
+        return `
+          <div style="margin-bottom:20px;">
+            <h2>${book.titleInfo}</h2>
+            <a href="${book.detailLink}" target="_blank">
+              <img src="${imgUrl}" style="max-width:150px;">
+            </a>
+          </div>
+        `;
+      }).join("");
+      document.getElementById("exm").innerHTML = html;
+    };
+
+    const searchBooks = async () => {
+      const kwd = document.getElementById("keyword").value.trim();
+      if (!kwd) return alert("검색어를 입력하세요!");
+
+      try {
+        const response = await fetch(`/api/handler?keyword=${encodeURIComponent(kwd)}`);
+        if (!response.ok) throw new Error(`서버 요청 실패: ${response.status}`);
+        const data = await response.json();
+        console.log("검색 결과:", data);
+        abcd.length = 0;
+        abcd.push(...(data.result || []));
+        render();
+      } catch (err) {
+        console.error(err);
+        document.getElementById("exm").innerHTML = "<p>검색 중 오류가 발생했습니다.</p>";
+      }
+    };
+
+    document.getElementById("searchBtn").addEventListener("click", searchBooks);
+  </script>
+</body>
 </html>
