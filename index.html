@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>도서 검색 테스트</title>
 </head>
+
 <body>
   <h1>국립중앙도서관 검색 테스트!</h1>
 
@@ -44,7 +46,9 @@
       if (!kwd) return alert("검색어를 입력하세요!");
 
       try {
-        const response = await fetch(`/api/handler?keyword=${encodeURIComponent(kwd)}`);
+        // index.html 안 JS
+        const response = await fetch(`/.netlify/functions/handler?keyword=${encodeURIComponent(kwd)}`);
+
         if (!response.ok) throw new Error(`서버 요청 실패: ${response.status}`);
         const data = await response.json();
         console.log("검색 결과:", data);
@@ -60,4 +64,5 @@
     document.getElementById("searchBtn").addEventListener("click", searchBooks);
   </script>
 </body>
+
 </html>
